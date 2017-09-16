@@ -32,12 +32,10 @@ int main()
 	for (int l = 0; l < 55; l++) { // Выводим итоговое число и смотрим на первые 10 чисел
 		if (k == 1) {
 			printf("%d ", Sum[l]);
-			//scanf("%d", &n);
 		}
 		if ((Sum[l] > 0) && (k == 0)) {
 			printf("%d ", Sum[l]);
 			k++;
-			//scanf("%d", &n);
 		}
 	}
 
