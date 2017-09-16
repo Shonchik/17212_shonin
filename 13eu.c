@@ -1,8 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 
-using namespace std;
-
 int main()
 {
 	int n = 0, Sum[55], ch = 0, k = 0;
