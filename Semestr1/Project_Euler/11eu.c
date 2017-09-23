@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+//#define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 
 int main()
@@ -10,7 +10,7 @@ int main()
 
 	for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
-			scanf ("%d", &matr[i][j]);
+			scanf_s ("%d", &matr[i][j]);
 		}
 	}
 
