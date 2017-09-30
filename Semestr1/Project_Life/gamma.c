@@ -15,13 +15,13 @@ int *create_matr (int *height, int *width, int *rule_burn, int *rule_survive, ch
 	int i = 0;
 	int j = 0;
 
-	fscanf (myfile, "#R B%d/S%d\n", rule_burn, rule_survive);
+	fscanf (myfile, "#R B%d/S%d\n", rule_burn, rule_survive);   //Считываем правила и размеры
 	fscanf (myfile, "#Size %d %d", height, width);
  
 	mat = (int*) calloc (*width * *height, sizeof(int));
 
 	while (feof(myfile) == 0) {
-		fscanf (myfile, "%d %d\n", &i, &j);
+		fscanf (myfile, "%d %d\n", &i, &j);                     //Считываем координаты клеток
 		*(mat + i * *height + j) = 1; 
 	}
 
@@ -31,7 +31,7 @@ int *create_matr (int *height, int *width, int *rule_burn, int *rule_survive, ch
 
 }
 
-int count_neighbours(int *matr, int i, int j, int *height, int *width) {
+int count_neighbours(int *matr, int i, int j, int *height, int *width) {   //Подсчет соседей + реализация тороидального поля
 
 	int count = 0;
 
@@ -134,14 +134,14 @@ int main() {
 	scanf ("%s", name_infile);
 
 	matr = create_matr(&height, &width, &rule_burn, &rule_survive, name_infile);
-	matr2 = create_matr(&height, &width, &rule_burn, &rule_survive, name_infile);
+	matr2 = create_matr(&height, &width, &rule_burn, &rule_survive, name_infile);  //Создаем матрицу и её маску для пересчета
 
 	if (NULL == matr) {
 		printf ("Could not create malloc!");
 		return 0;
 	}
 
-	while (proverka == 0) {
+	while (proverka == 0) {                    //Пересчет
 
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -171,8 +171,7 @@ int main() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if (*(matr2 + i * height + j) == 1) {
-					if (*(matr + i * height + j) == 1) {
-						*(matr2 + i * height + j) = 0;
+					if (*(matr + i * height + j) == 1) {         //Делаем красиво
 					}
 				}
 				if (*(matr2 + i * height + j) == 2) {
@@ -181,13 +180,13 @@ int main() {
 			}
 		}
 
-		for (int j = 0; j < width * height; j++) {
+		for (int j = 0; j < width * height; j++) {                    //Синхронизируем маску с матрицей
 			*(matr + j) = *(matr2 + j);
 		}
 
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				printf("%d ", *(matr + i * height + j));
+				printf("%d ", *(matr + i * height + j));                  //Проверка на наличие жизни
 				if (*(matr + i * height + j) == 1) {
 					count_live++;
 				}
