@@ -207,4 +207,7 @@ int main() {
 
 	printf ("Thanks\n");
 
+	free (matr);
+	free (matr2);
+
 }
