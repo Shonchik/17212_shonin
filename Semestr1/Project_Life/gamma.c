@@ -172,6 +172,7 @@ int main() {
 			for (int j = 0; j < width; j++) {
 				if (*(matr2 + i * height + j) == 1) {
 					if (*(matr + i * height + j) == 1) {         //Делаем красиво
+						*(matr2 + i * height + j) = 0;
 					}
 				}
 				if (*(matr2 + i * height + j) == 2) {
@@ -180,13 +181,13 @@ int main() {
 			}
 		}
 
-		for (int j = 0; j < width * height; j++) {                    //Синхронизируем маску с матрицей
+		for (int j = 0; j < width * height; j++) {            //Синхронизируем маску с матрицей
 			*(matr + j) = *(matr2 + j);
 		}
 
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				printf("%d ", *(matr + i * height + j));                  //Проверка на наличие жизни
+				printf("%d ", *(matr + i * height + j));               //Проверка на наличие жизни   
 				if (*(matr + i * height + j) == 1) {
 					count_live++;
 				}
