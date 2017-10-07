@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define summ 1000
+#define SUMM 1000
 
 int main()
 {
@@ -9,13 +9,13 @@ int main()
 	int c = 0;
 	int proverka = 0;
 
-	for (int i = 499; i > 1; i--) {
-		for (int j = summ - i; j > 1; j--) {
-			if (i * i == j * j + (summ - i - j) * (summ - i - j)) {
+	for (int i = SUMM / 2; i > 1; i--) {
+		for (int j = SUMM - i; j > 1; j--) {
+			if (i * i == j * j + (SUMM - i - j) * (SUMM - i - j)) {
 				proverka = 1;
 				c = i;
 				b = j;
-				a = summ - i - j;
+				a = SUMM - i - j;
 				break;
 			}
 		}
