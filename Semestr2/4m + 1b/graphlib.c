@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "graphlib.h"
 #include <string.h>
 #include <stdlib.h>
@@ -25,7 +26,7 @@ struct graph_base * read_graph(FILE * f){
 		d = Ht_get(gb->ht, node1);
 		if(d == 0){
 			d = (struct Ht_data *)calloc(1, sizeof(struct Ht_data));
-			itoa(node1, d->name, 10);
+			_itoa(node1, d->name, 10);
 			d->node = node1;
 			IntList_push(&(d->list), node2);
 			Ht_set(gb->ht, d);
@@ -37,7 +38,7 @@ struct graph_base * read_graph(FILE * f){
 		d = Ht_get(gb->ht, node2);
 		if(d == 0){
 			d = (struct Ht_data *)calloc(1, sizeof(struct Ht_data));
-			itoa(node2, d->name, 10);
+			_itoa(node2, d->name, 10);
 			d->node = node2;
 			IntList_push(&(d->list), node1);
 			Ht_set(gb->ht, d);
@@ -69,7 +70,7 @@ void printGraphToWidth(struct graph_base * gb){
 		} 
 		while(queue != 0){
 			int tec = IntList_pop_first(&queue);
-			printf("%d --- ", tec);
+			printf("%d - ", tec);
 			struct Ht_data * htd = Ht_get(gb->ht, tec);
 			if(htd != 0){
 				struct intList * p = htd->list;

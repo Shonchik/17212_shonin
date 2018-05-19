@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Htable.h"
 #include <stdlib.h>
 #include <string.h>
@@ -72,7 +73,7 @@ void Ht_set(struct Hash_table * ht, struct Ht_data * data){
 
 struct Ht_data * Ht_get(struct Hash_table * ht, int num){
 	char str[NAMESIZE];
-	itoa(num, str, 10);
+	_itoa(num, str, 10);
 	int k = 0;
 	int key = 0;
 	while(1){

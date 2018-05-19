@@ -6,6 +6,8 @@ int main(){
 	char input[90] = "db2.txt";
 	//printf("Write name file: ");
 	//scanf("%s \n", input);
+	int x = 0;
+	scanf("%d", &x);
 	FILE * f = fopen(input, "r");
 	struct graph_base * gr = read_graph(f);
 	fclose(f);
@@ -15,7 +17,7 @@ int main(){
 	}
 	printGraphToWidth(gr);
 	printf("\n");
-	printGraphWayFrom(gr, 1);
+	printGraphWayFrom(gr, x);
 	free_graph(gr);
 	return 0;
 }

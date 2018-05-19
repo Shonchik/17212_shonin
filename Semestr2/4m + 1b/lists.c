@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "lists.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -53,7 +54,7 @@ void IntList_push_from(struct intList ** l, int num, int counter){
 
 void IntList_print(struct intList * l){
 	while(l != 0){
-		printf("%d -- ", l->data);
+		printf("%d - ", l->data);
 		l=l->next;
 	}
 	printf("\n");
