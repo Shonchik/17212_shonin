@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "Htable.h"
 #include "lists.h"
+#include "Htable.h"
 
 struct graph_base{
 	struct Hash_table * ht;
@@ -34,7 +34,7 @@ struct graph_base * read_graph(FILE * f){
 		if(d == 0){
 			d = (struct Ht_data *)calloc(1, sizeof(struct Ht_data));
 			_itoa(node1, d->name, 10);
-			d->node = node1;
+			d->data = node1;
 			IntList_push(&(d->list), node2);
 			Ht_set(gb->ht, d);
 		} else{
@@ -46,7 +46,7 @@ struct graph_base * read_graph(FILE * f){
 		if(d == 0){
 			d = (struct Ht_data *)calloc(1, sizeof(struct Ht_data));
 			_itoa(node2, d->name, 10);
-			d->node = node2;
+			d->data = node2;
 			IntList_push(&(d->list), node1);
 			Ht_set(gb->ht, d);
 		} else{
@@ -64,38 +64,29 @@ void free_graph(struct graph_base * gb){
 	free(gb);
 }
 
-void GraphWidth(struct graph_base * gb){
+void printWidth (struct graph_base * gb, int num) {
 	struct intList *queue = 0;
-	while(gb->list != 0){
-		int pop_int = IntList_pop_first(&gb->list); 
-		if(Ht_get(gb->ht, pop_int)->was_print != 5){
-			printf("\n");
-			IntList_push(&queue, pop_int);
-			Ht_get(gb->ht, queue->data)->was_print = 5;
-		} else{
-			continue;
-		} 
-		while(queue != 0){
-			int tec = IntList_pop_first(&queue);
-			printf("%d ", tec);
-			struct Ht_data * htd = Ht_get(gb->ht, tec);
-			if(htd != 0){
-				struct intList * p = htd->list;
-				while(p != 0){
-					struct Ht_data * htd2 = Ht_get(gb->ht, p->data);
-					if(htd2->was_print != 5){
-						IntList_push(&queue, p->data);
-						htd2->was_print = 5;
-					}
-					p = p->next;
-				}
+	IntList_push(&queue, num);
+	Ht_get(gb->ht, queue->data)->qu = 2;
+	while(queue != 0){
+		int id = IntList_pop_first(&queue);
+		printf("%d ", id);
+		struct Ht_data * h = Ht_get(gb->ht, id);
+		struct intList * p = h->list;
+		while(p != 0){
+			struct Ht_data * h2 = Ht_get(gb->ht, p->data);
+			if(h2->qu != 2){
+				//printf(" -%d- ", p->data);
+				IntList_push(&queue, p->data);
+				h2->qu = 2;
 			}
+			p = p->next;
 		}
 	}
+
 }
 
-
-int find_else_way(struct graph_base * gb, struct intList * way){
+int find_neighboor(struct graph_base * gb, struct intList * way){
 	struct intList * p = way;
 	struct Ht_data * dt;
 	while(p != 0){
@@ -108,52 +99,56 @@ int find_else_way(struct graph_base * gb, struct intList * way){
 	return -1;
 }
 
-void GraphFrom(struct graph_base * gb, int node){
+void printGraphWayFrom(struct graph_base * gb, int num){
 	struct intList * ring = 0;
-	IntList_push(&ring, node);
+	IntList_push(&ring, num);
 	struct intList * p = ring;
 	struct Ht_data * dt;
-	int sosed = -1;
-	int tec = 0;
-	int t2;
+	int neighboor = -1;
+	int t = 0;
+	int t2 = 0;
 	while(1){
-		tec = find_else_way(gb, p);
-		sosed = -1;
-		t2 = tec;
-		if(tec == -1){
+		t = find_neighboor(gb, p);
+		neighboor = -1;
+		t2 = t;
+		if(t == -1){
 			break;
 		}
-		p = IntList_get_ondata(p, tec);
-		dt = Ht_get(gb->ht, tec);
+		p = IntList_get_ondata(p, t);
+		dt = Ht_get(gb->ht, t);
 		int c = 0;
-		while(sosed != tec){
-			sosed = IntList_pop_first(&(dt->list));
-			IntList_pop_ondata(&(Ht_get(gb->ht, sosed)->list), t2);
-			t2 = sosed;
-			IntList_push_from(&p, sosed, c);
+		while(neighboor != t){
+			neighboor = IntList_pop_first(&(dt->list));
+			IntList_pop_ondata(&(Ht_get(gb->ht, neighboor)->list), t2);
+			t2 = neighboor;
+			IntList_push_from(&p, neighboor, c);
 			c++;
-			dt = Ht_get(gb->ht, sosed);
+			dt = Ht_get(gb->ht, neighboor);
 		}
 	} 
 	IntList_print(ring);
 }
 
 int main(){
-	char input[90] = "db2.txt";
-	//printf("Write name file: ");
-	//scanf("%s \n", input);
-	int x = 0;
-	scanf("%d", &x);
-	FILE * f = fopen(input, "r");
+
+	char name[50] = "db2.txt";
+	FILE * f = fopen(name, "r");
 	struct graph_base * gr = read_graph(f);
 	fclose(f);
+
 	if(gr->ht->buf_size == 0){
 		printf("error read\n");
 		return -1;
 	}
-	GraphWidth(gr);
+
+	int x = 0;
+	scanf("%d", &x);
+
+	printWidth(gr, x);
 	printf("\n");
-	GraphFrom(gr, x);
+	//IntList_print(gr->list);
+	printGraphWayFrom(gr, x);
 	free_graph(gr);
-	return 0;
+	return 0;	
+
 }

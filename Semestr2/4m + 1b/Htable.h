@@ -5,10 +5,10 @@
 #define BUFSIZE 30
 
 struct Ht_data{
-	char name[NAMESIZE]; //for hаsh
-	int node;
+	char name[NAMESIZE];
+	int data;
 	struct intList * list;
-	int was_print;
+	int qu;
 };
 
 struct Hash_table{
