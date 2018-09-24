@@ -15,11 +15,9 @@ void Decode(char* fileNameRead, char* fileNameWrite)
 
 	if (input == NULL) {
 		printf("Failed to open file '%s'", fileNameRead);
-		exit(0);
 	}
 	if (output == NULL) {
 		printf("Failed to open file '%s'", fileNameWrite);
-		exit(0);
 	}
 	unsigned long long int k = 0;
 	unsigned long long int Textdlin;

@@ -43,7 +43,7 @@ void print(void *arr, int size){
     int count_byte = size * sizeof(int);
     unsigned char *byte_arr = (unsigned char *)arr;
     unsigned char bin = 1;
-    bin = bin << (sizeof(char) * 8 - 1);
+    bin = bin << 7;
     int control = 0;
     for(int i = 0; i < count_byte; i++){
         while((control | bin) != 0){
@@ -56,7 +56,7 @@ void print(void *arr, int size){
             bin = bin >> 1;
         }
         bin = 1;
-        bin = bin << (sizeof(char) * 8 - 1);
+        bin = bin << 7;
         byte_arr++;
     }
 }
@@ -70,7 +70,7 @@ int check(void *arr, int hash){
 	else return -1;
 }
 
-void find (unsigned int *arr, int size, int lim, int hash){
+void find (void *arr, int size, int lim, int hash){
     char word[10];
     int control = 0;
     while(0 != strcmp("-1", word)){
