@@ -37,13 +37,13 @@ int main(int argc, char** argv){
 	char * str2 = new char [str.length()+1];
 	strcpy( str2, str.c_str() );
 
-	char * pch = strtok (str2," ,.-");
+	char * pch = strtok (str2," ,.-!?:;@#%^&*()_");
  
     while (pch != NULL)
     {	
     	MapTable[pch]++;
         //outfile << MapTable[pch]  << "\n";
-        pch = strtok (NULL, " ,.-");
+        pch = strtok (NULL, " ,.-!?:;@#%^&*()_");
         MaxWords++;
     }
 
