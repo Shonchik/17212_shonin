@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,48 +14,45 @@ class SqrtTest {
     private List<String> arg;
     private CommandClass obj = null;
 
-    @BeforeEach
-    void setUp() {
-        try {
-            context = new Context();
-            arg = new ArrayList<>();
-            obj = new Sqrt();
-            context.pushToStack(16.0);
-            arg.add("sqrt");
 
-            Class<?> className = Class.forName(obj.getClass().getName());
-
-            //Получаю список полей класса и начинаю их обход
-            Field[] declaredFields = className.getDeclaredFields();
-            for (Field declaredField : declaredFields) {
-                //Делаю поле доступным
-                declaredField.setAccessible(true);
-                //Если аннотация класса Inject, то
-                if (declaredField.isAnnotationPresent(Inject.class)) {
-                    //Получаю доступ к аннотации
-                    Inject annotation = declaredField.getDeclaredAnnotation(Inject.class);
-                    switch (annotation.arg()) {
-                        case CONTEXT:
-                            declaredField.set(obj, context);
-                            break;
-                        case ARGS:
-                            declaredField.set(obj, arg);
-                            break;
-
-                    }
-                }
-            }
-        }catch(Exception e){
-            System.out.println("ERROR in TEST: " + e);
-        }
-    }
 
     @Test
     void run() {
+
         try {
-            assertNotNull(obj);
-            obj.run();
-            assertEquals(4.0, context.popFromStack());
+            Factory.createCommand(Arrays.asList("define", "a", "1")).run();
+            Factory.createCommand(Arrays.asList("define", "b", "2")).run();
+            Factory.createCommand(Arrays.asList("define", "c", "1")).run();
+
+            Factory.createCommand(Arrays.asList("push", "2")).run();
+            Factory.createCommand(Arrays.asList("push", "a")).run();
+            Factory.createCommand(Arrays.asList("*")).run();
+
+            Factory.createCommand(Arrays.asList("push", "b")).run();
+            Factory.createCommand(Arrays.asList("push", "0")).run();
+            Factory.createCommand(Arrays.asList("-")).run();
+
+            Factory.createCommand(Arrays.asList("push", "a")).run();
+            Factory.createCommand(Arrays.asList("push", "c")).run();
+            Factory.createCommand(Arrays.asList("*")).run();
+            Factory.createCommand(Arrays.asList("push", "4")).run();
+            Factory.createCommand(Arrays.asList("*")).run();
+
+            Factory.createCommand(Arrays.asList("push", "b")).run();
+            Factory.createCommand(Arrays.asList("push", "b")).run();
+            Factory.createCommand(Arrays.asList("*")).run();
+
+            Factory.createCommand(Arrays.asList("-")).run();
+
+            Factory.createCommand(Arrays.asList("sqrt")).run();
+
+            Factory.createCommand(Arrays.asList("+")).run();
+
+            Factory.createCommand(Arrays.asList("/")).run();
+            Field f = Factory.class.getDeclaredField("context");
+            f.setAccessible(true);
+            assertEquals(-1.0, ((Context)f.get(null)).popFromStack());
+            f.setAccessible(false);
         }catch(Exception e){
             System.out.println("ERROR in TEST: " + e);
         }
