@@ -14,7 +14,7 @@ public class Factory {
     private static Context context;
 
     static {
-        try (InputStream reader = new FileInputStream("src\\commands.properties")) {
+        try (InputStream reader = new FileInputStream("src\\main\\java\\commands.properties")) {
             classes = new TreeMap<String, Class>();
 
             property = new Properties();
