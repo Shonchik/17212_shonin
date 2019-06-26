@@ -24,7 +24,7 @@ class WordCounterTest {
         assertNotNull(counter);
 
         try {
-            counter.run("src\\test.txt");
+            counter.run("src\\main\\java\\test.txt");
         }catch (Exception e){
             System.out.println(e);
         }
