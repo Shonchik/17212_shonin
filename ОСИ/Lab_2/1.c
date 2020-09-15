@@ -27,6 +27,12 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     code2=pthread_join(thread, NULL);
+    if (code2!=NOTERROR) {
+        char buf[256];
+        strerror_r(code, buf, sizeof buf);
+        fprintf(stderr, "%s: creating thread: %s\n", argv[0], buf);
+        exit(1);
+    }
 
     int i = 0;
     for (i = 0; i < 10; i++) {
