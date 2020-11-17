@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <errno.h>
 
 #define THREAD_CREATION_SUCCESS 0
 #define PRINT_COUNT 10
@@ -26,13 +27,11 @@ int main(int argc, char *argv[]) {
 
     code = pthread_create(&thread, NULL, thread_body, "Child\n");
     if (code != THREAD_CREATION_SUCCESS) {
-        char buf[BUFFER_SIZE];
-        strerror_r(code, buf, sizeof buf);
-        printf("%s: creating thread: %s\n", argv[0], buf);
+        errno = code;
+        perror("Error in creating thread\n");
         exit(EXIT_ERROR);
     }
 
     printLines("Parent\n");
     pthread_exit(NULL);
 }
-
