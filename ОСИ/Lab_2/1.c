@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <errno.h>
 
 #define THREAD_CREATION_SUCCESS 0
 #define THREAD_JOIN_SUCCESS 0
@@ -11,14 +12,9 @@
 
 void printLines(const char *str) {
     int i;
-    for(i = 0; i < PRINT_COUNT; i++)
+    for(i = 0; i < PRINT_COUNT; i++) {
         printf(str);
-}
-
-void printError(int code, char **argv) {
-    char buf[BUFFER_SIZE];
-    strerror_r(code, buf, sizeof buf);
-    printf("%s: %s\n", argv[0], buf);
+    }
 }
 
 void* thread_body(void * param) {
@@ -32,13 +28,15 @@ int main(int argc, char *argv[]) {
 
     code = pthread_create(&thread, NULL, thread_body, "Child\n");
     if (code != THREAD_CREATION_SUCCESS) {
-        printError(code, argv);
+        errno = code;
+        perror("Error in creating thread\n");
         exit(EXIT_ERROR);
     }
 	
     code = pthread_join(thread, NULL);
     if (code != THREAD_JOIN_SUCCESS) {
-        printError(code, argv);
+        errno = code;
+        perror("Error in join thread\n");
         exit(EXIT_ERROR);
     }
 
