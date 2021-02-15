@@ -16,10 +16,8 @@ def func(n):
         else:
             tmpList.sort(reverse = True) #Списки с нечетным номером сортирую по убыванию
 
-    
     return result
-
-    
+   
 n = int(input())
 result = func(n)
 
